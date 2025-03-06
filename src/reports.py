@@ -15,7 +15,7 @@ LOGS_DIR = ROOT_DIR / "logs"
 logger = get_logger("logger", f"{LOGS_DIR}\\{os.path.basename(os.path.abspath(__file__))}.log")
 
 
-def report(filename: str = "report.csv"):
+def report(filename: str = "report.csv") -> Callable:
     """Декоратор записывает в файл результат работы функции"""
 
     def decorator(func: Callable) -> object:
@@ -38,10 +38,11 @@ def spending_by_category(transactions: pd.DataFrame, category: str, date: Option
     """Возвращает список трат по заданной категории в заданном периоде"""
     logger.debug(transactions)
     if date is None:
-        date = datetime.date.today()
+        date = str(datetime.datetime.now().strftime("%d.%m.%Y"))
     else:
-        date = datetime.datetime.strptime(date, "%d.%m.%Y")
-    second_date = date - datetime.timedelta(days=90)
+        date = datetime.datetime.strptime(date, "%d.%m.%Y").strftime("%d.%m.%Y")
+    date_obj = datetime.datetime.strptime(date, "%d.%m.%Y")
+    second_date = date_obj - datetime.timedelta(days=90)
     transactions = transactions.loc[:, ["Категория", "Дата операции", "Сумма операции"]]
     logger.info("Выполняется фильтрация значений по дате и категории")
     try:

@@ -15,6 +15,7 @@ pytest-cov = "^6.0.0"
 dotenv = "^0.9.9"
 pandas-stubs = "^2.2.3.241126"
 types-requests = "^2.32.0.20241016"
+freezegun = "^1.5.1"
 
 
 [tool.poetry.group.lint.dependencies]
