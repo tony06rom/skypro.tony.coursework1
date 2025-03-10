@@ -50,8 +50,8 @@ def main(date: datetime.datetime | str):
 
 if __name__ == "__main__":
     today = datetime.datetime.today()  # На сегодняшний день. Подойдет для currency_rates и stock_prices
-    #today = datetime.datetime.today() - datetime.timedelta(days=1825)     # Если бы "сегодня" было 5 лет назад
-                                                                            # Подойдет для cards и top_transactions
+    # today = datetime.datetime.today() - datetime.timedelta(days=1825)     # Если бы "сегодня" было 5 лет назад.
+    # Подойдет для cards и top_transactions
     print(f"Дата на сегодня: {today}")
     main(today)
 

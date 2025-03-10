@@ -1,5 +1,4 @@
 import os
-from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -96,10 +95,10 @@ def get_stock_prices(stock_list: list) -> list:
         print("Server Error")
 
     result = response.json()
-    #yesterday_date = str(datetime.now() - timedelta(days=1)).split(" ")[0]     # Под изначальный сценарий (вчера)
+    # yesterday_date = str(datetime.now() - timedelta(days=1)).split(" ")[0]     # Под изначальный сценарий (вчера)
     stock_prices = []
     for stock in result.get("data"):
-        #if yesterday_date in stock.get("date"):    # Изначально функция должна была смотреть только на вчерашнюю дату
+        # if yesterday_date in stock.get("date"):    # Изначально функция должна была смотреть только на вчерашнюю дату
         stock_prices.append({"price": stock.get("close"), "stock": stock.get("symbol")})
 
     logger.info("Функция get_stock_prices выполнена успешно")
