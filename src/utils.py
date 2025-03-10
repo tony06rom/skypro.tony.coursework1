@@ -1,5 +1,4 @@
 import os
-from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -38,14 +37,10 @@ def get_currency_rates(currency_list: list) -> list:
     """Обращение к внешнему API. Возвращает курсы валют из списка"""
 
     currencies = ""
-
     for currency in currency_list:
         currencies += currency + "RUB" + ","
-
     currencies = currencies[:-1]
-
     url = f"https://currate.ru/api/?get=rates&pairs={currencies}&key={CURRENCY_RATE_API_KEY}"
-
     response = requests.request("GET", url)
     status_code = response.status_code
 
@@ -66,11 +61,9 @@ def get_currency_rates(currency_list: list) -> list:
         print("Server Error")
 
     result = response.json().get("data")
-
     currency_rates = []
     for currency, rate in result.items():
         currency_rates.append({"currency": currency[:-3], "rate": float(rate)})
-
     logger.info("Функция get_currency_rates выполнена успешно")
     return currency_rates
 
@@ -81,7 +74,6 @@ def get_stock_prices(stock_list: list) -> list:
     url = f"https://api.marketstack.com/v1/eod?access_key={STOCK_PRICES_API_KEY}"
     querystring = {"symbols": stocks}
     response = requests.get(url, params=querystring)
-
     status_code = response.status_code
     if status_code == 400:
         logger.warning("Bad Request")
@@ -103,16 +95,11 @@ def get_stock_prices(stock_list: list) -> list:
         print("Server Error")
 
     result = response.json()
-    yesterday_date = str(datetime.now() - timedelta(days=1)).split(" ")[0]
+    # yesterday_date = str(datetime.now() - timedelta(days=1)).split(" ")[0]     # Под изначальный сценарий (вчера)
     stock_prices = []
     for stock in result.get("data"):
-        if yesterday_date in stock.get("date"):
-            stock_prices.append({"price": stock.get("close"), "stock": stock.get("symbol")})
-    usd_rate = get_currency_rates(["USD"])[0].get("rate")
-
-    for stock in stock_prices:
-        stock["price"] *= usd_rate
-        stock["price"] = round(stock["price"], 2)
+        # if yesterday_date in stock.get("date"):    # Изначально функция должна была смотреть только на вчерашнюю дату
+        stock_prices.append({"price": stock.get("close"), "stock": stock.get("symbol")})
 
     logger.info("Функция get_stock_prices выполнена успешно")
     return stock_prices
